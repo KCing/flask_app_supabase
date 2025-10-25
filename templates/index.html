@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>MyPage</title>
+{% endblock title %}
+
+
+{% block body %}
+<div class="container mt-5">
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Page Title -->
+  <h1 class="text-center fw-bold mb-4">Task Master</h1>
+
+  <!-- No Task Message -->
+  {% if tasks|length < 1 %}
+    <h4 class="text-center text-muted">There are no tasks, create one now!</h4>
+  {% else %}
+
+  <!-- Task Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle shadow-sm">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Task</th>
+          <th>Added</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+          <tr>
+            <td>{{ task.task }}</td>
+            <td>{{ task.created_at }}</td>
+            <td class="text-center">
+              <a href="/update/{{ task.id }}" class="btn btn-sm btn-warning me-2">Update</a>
+              <a href="/delete/{{ task.id }}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% endif %}
+
+  <!-- Task Form -->
+  <div class="d-flex justify-content-center mt-4">
+    <form action="/" method="POST" class="d-flex gap-2 col-md-6">
+      <input type="text" name="content" id="content" class="form-control" placeholder="Enter a new task" required>
+      <input type="submit" value="Add Task" class="btn btn-primary">
+    </form>
+  </div>
+
+</div>
+{% endblock body %}
